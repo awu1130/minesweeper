@@ -1,0 +1,6 @@
+# ninja log v5
+1	826	7226725942324850	CMakeFiles/minesweeper.dir/main.cpp.obj	dc39b1da5e86eace
+831	997	7226725944014806	minesweeper.exe	93e9222f8bebe22c
+10	440	7226726513593498	build.ninja	70f12fbdf58cb625
+11	1140	7226726527193307	CMakeFiles/minesweeper.dir/main.cpp.obj	684399cb224bcfe0
+1143	1406	7226726529763280	minesweeper.exe	93e9222f8bebe22c
