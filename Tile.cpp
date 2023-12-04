@@ -13,10 +13,9 @@ sf::Vector2f Tile::getLocation() {
 Tile::State Tile::getState() {
     return state;
 }
-/*
 std::array<Tile*, 8>& Tile::getNeighbors() {
     return neighbors;
-}*/
+}
 void Tile::setState(State _state) {
     state = _state;
     // Should trigger other behaviors related to the state change (including visualization)
@@ -65,10 +64,38 @@ void Tile::draw() {
         toolbox.window.draw(sprite2);
     }
     else if (state == REVEALED) {
-        sf::Sprite sprite2(toolbox.revealedTile);
-        sprite2.setPosition(coordinate.x, coordinate.y);
+        sf::Sprite sprite(toolbox.revealedTile);
+        sprite.setPosition(coordinate.x, coordinate.y);
         // Draw the flag on top of the tile
-        toolbox.window.draw(sprite2);
+        toolbox.window.draw(sprite);
+        if (numMines != 0) {
+            sf::Sprite sprite2(toolbox.flag);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        }
     }
 }
 
+void Tile::revealNeighbors() {
+    // Function to set the image for the tile
+    // check if hidden
+        // reveal
+        // if not bomb
+            // for in neighbors
+                // recursive
+    if (state == HIDDEN) {
+        state == REVEALED;
+        numMines = 0;
+        for (int i; i < 8; i++) {
+            if (auto mine = dynamic_cast<Mine*>(neighbors[i])) {
+                numMines++;
+            }
+        }
+        if (numMines != 0) {
+            for (int i; i < 8; i++) {
+                neighbors[i]->revealNeighbors();
+            }
+        }
+    }
+}

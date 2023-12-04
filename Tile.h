@@ -6,7 +6,6 @@ using namespace std;
 class Tile {
 protected:
     void revealNeighbors();
-    // Function to set the image for the tile
 
 public:
     enum State { REVEALED, HIDDEN, FLAGGED, EXPLODED };
@@ -24,6 +23,7 @@ private:
     State state;
     sf::Sprite sprite;
     std::array<Tile*, 8> neighbors;
+    int numMines;
 };
 
 

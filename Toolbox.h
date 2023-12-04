@@ -24,6 +24,14 @@ public:
     sf::Texture faceLose;
     sf::Texture faceWin;
     sf::Texture faceHappy;
+    sf::Texture number1;
+    sf::Texture number2;
+    sf::Texture number3;
+    sf::Texture number4;
+    sf::Texture number5;
+    sf::Texture number6;
+    sf::Texture number7;
+    sf::Texture number8;
     /*
     sf::Sprite spriteHiddenTile(sf::Texture texture);
     sf::Sprite spriteButtonTest1(sf::Texture texture);

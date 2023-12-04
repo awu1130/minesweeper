@@ -17,6 +17,14 @@ Toolbox::Toolbox() {
     faceLose.loadFromFile("./images/face_lose.png");
     faceWin.loadFromFile("./images/face_win.png");
     faceHappy.loadFromFile("./images/face_happy.png");
+    number1.loadFromFile("./images/number_1.png");
+    number2.loadFromFile("./images/number_1.png");
+    number3.loadFromFile("./images/number_1.png");
+    number4.loadFromFile("./images/number_1.png");
+    number5.loadFromFile("./images/number_1.png");
+    number6.loadFromFile("./images/number_1.png");
+    number7.loadFromFile("./images/number_1.png");
+    number8.loadFromFile("./images/number_1.png");
     // load files
     // dynamically allocate gameState
     gameState = new GameState();

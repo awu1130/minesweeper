@@ -17,7 +17,7 @@ public:
     void setPlayStatus(PlayStatus _status);
 private:
     PlayStatus playStatus;
-    vector<vector<Tile*>> board;
+    std::vector<std::vector<std::unique_ptr<Tile>>> board;
     //vector<vector<Mine>> mineBoard;
     int numFlags;
     int numMines;

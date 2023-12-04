@@ -21,17 +21,16 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     for (int y = 0; y < _dimensions.y; y++) {
         board[y].resize(_dimensions.x);
         for (int x = 0; x < _dimensions.x; x++) {
-            board[y][x] = new Tile(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
+            board[y][x] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
         }
     }
     // create mines
     for (numMines; numMines < _numberOfMines; numMines++) {
         double randomY = yDistribution(gen);
         double randomX = xDistribution(gen);
-        auto x = new Mine(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
-        board[randomY][randomX] = reinterpret_cast<Tile *>(x);
+        board[randomY][randomX] = std::make_unique<Mine>(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
     }
-    /*
+    //int i = 0;
     for (int y = 0; y < _dimensions.y; y++) {
         for (int x = 0; x < _dimensions.x; x++) {
             if (y - 1 >= 0 && x - 1 >= 0) {
@@ -75,8 +74,12 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
                 neighbors[7] = nullptr;
             }
             board[y][x]->setNeighbors(neighbors);
+            /*
+            std::cout<<i;
+            std::cout<<" ";
+            i++;*/
         }
-    }*/
+    }
 }
 
 GameState::GameState(const char* filepath) {
@@ -89,7 +92,7 @@ int GameState::getMineCount() {
     return numMines;
 }
 Tile* GameState::getTile(int x, int y) {
-     return reinterpret_cast<Tile *>(&board[x][y]);
+    return board[x][y].get();
 }
 GameState::PlayStatus GameState::getPlayStatus() {
     return playStatus;
@@ -98,59 +101,4 @@ void GameState::setPlayStatus(PlayStatus _status) {
     playStatus = _status;
 }
 
-/*
- * // make neighbors
-            if (y == 0) {
-                if (x == 0) {
-                    neighbors[0] = nullptr;
-                    neighbors[1] = nullptr;
-                    neighbors[2] = nullptr;
-                    neighbors[3] = nullptr;
-                    neighbors[4] = std::make_unique<Tile>(sf::Vector2f(float(x + 1) * 32.0f, float(y) * 32.0f)).release();
-                    neighbors[5] = nullptr;
-                    neighbors[6] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y + 1) * 32.0f)).release();
-                    neighbors[7] = std::make_unique<Tile>(sf::Vector2f(float(x + 1) * 32.0f, float(y + 1) * 32.0f)).release();
-                }
-                else if (x == _dimensions.x) {
-                    neighbors[0] = nullptr;
-                    neighbors[1] = nullptr;
-                    neighbors[2] = nullptr;
-                    neighbors[3] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                    neighbors[4] = nullptr;
-                    neighbors[5] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y + 1) * 32.0f)).release();
-                    neighbors[6] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y + 1) * 32.0f)).release();
-                    neighbors[7] = nullptr;
-                }
-                else {
-                    neighbors[0] = nullptr;
-                    neighbors[1] = nullptr;
-                    neighbors[2] = nullptr;
-                    neighbors[3] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                    neighbors[4] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                    neighbors[5] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y + 1) * 32.0f)).release();
-                    neighbors[6] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y + 1) * 32.0f)).release();
-                    neighbors[7] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                }
-            }
-            else if (x == 0) {
-                neighbors[0] = nullptr;
-                neighbors[1] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                neighbors[2] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                neighbors[3] = nullptr;
-                neighbors[4] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                neighbors[5] = nullptr;
-                neighbors[6] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y + 1) * 32.0f)).release();
-                neighbors[7] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-            }
-            else {
-                neighbors[0] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y - 1) * 32.0f)).release();
-                neighbors[1] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y - 1) * 32.0f)).release();
-                neighbors[2] = std::make_unique<Tile>(sf::Vector2f(float(x + 1) * 32.0f, float(y - 1) * 32.0f)).release();
-                neighbors[3] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y) * 32.0f)).release();
-                neighbors[4] = std::make_unique<Tile>(sf::Vector2f(float(x + 1) * 32.0f, float(y) * 32.0f)).release();
-                neighbors[5] = std::make_unique<Tile>(sf::Vector2f(float(x - 1) * 32.0f, float(y + 1) * 32.0f)).release();
-                neighbors[6] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y + 1) * 32.0f)).release();
-                neighbors[7] = std::make_unique<Tile>(sf::Vector2f(float(x + 1) * 32.0f, float(y + 1) * 32.0f)).release();
-            }
- */
 
