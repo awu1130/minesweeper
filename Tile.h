@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <array>
 using namespace std;
 
 class Tile {
@@ -22,7 +23,7 @@ private:
     sf::Vector2f coordinate;
     State state;
     sf::Sprite sprite;
-    //std::array<Tile*, 8> neighbors;
+    std::array<Tile*, 8> neighbors;
 };
 
 

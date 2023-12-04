@@ -2,7 +2,7 @@
 #include "Toolbox.h"
 #include <iostream>
 
-Mine::Mine(sf::Vector2f position) : Tile(position), hasMine(true) {
+Mine::Mine(sf::Vector2f position) : Tile(position) {
     hasMine = true;
     state = HIDDEN;
     coordinate = position;
@@ -13,10 +13,11 @@ void Mine::setState(State _state) {
 }
 Mine::State Mine::getState() {
     return state;
-}/*
+}
+
 void Mine::setNeighbors(std::array<Mine*, 8> _neighbors) {
     neighbors = _neighbors;
-}*/
+}
 void Mine::onClickLeft() {
     if (state == HIDDEN) {
         state = EXPLODED;

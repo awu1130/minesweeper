@@ -21,14 +21,15 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     for (int y = 0; y < _dimensions.y; y++) {
         board[y].resize(_dimensions.x);
         for (int x = 0; x < _dimensions.x; x++) {
-            board[y][x] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
+            board[y][x] = new Tile(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
         }
     }
     // create mines
     for (numMines; numMines < _numberOfMines; numMines++) {
         double randomY = yDistribution(gen);
         double randomX = xDistribution(gen);
-        board[randomY][randomX] = std::make_unique<Mine>(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
+        auto x = new Mine(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
+        board[randomY][randomX] = reinterpret_cast<Tile *>(x);
     }
     /*
     for (int y = 0; y < _dimensions.y; y++) {
@@ -88,7 +89,7 @@ int GameState::getMineCount() {
     return numMines;
 }
 Tile* GameState::getTile(int x, int y) {
-     return board[x][y].get();
+     return reinterpret_cast<Tile *>(&board[x][y]);
 }
 GameState::PlayStatus GameState::getPlayStatus() {
     return playStatus;

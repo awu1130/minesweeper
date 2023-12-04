@@ -21,11 +21,9 @@ void Tile::setState(State _state) {
     state = _state;
     // Should trigger other behaviors related to the state change (including visualization)
 }
-/*
 void Tile::setNeighbors(std::array<Tile*, 8> _neighbors) {
     neighbors = _neighbors;
 }
-*/
 void Tile::onClickLeft() {
     if (state == HIDDEN) {
         state = REVEALED;

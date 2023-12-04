@@ -47,7 +47,6 @@ void render() {
                             }
                             originalTileStates.push_back(rowStates);
                         }
-
                         // Change states to EXPLODED in debug mode
                         for (int y = 0; y < 25; ++y) {
                             for (int x = 0; x < 16; ++x) {
