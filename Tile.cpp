@@ -22,10 +22,12 @@ void Tile::setState(State _state) {
 }
 void Tile::setNeighbors(std::array<Tile*, 8> _neighbors) {
     neighbors = _neighbors;
+
+
 }
 void Tile::onClickLeft() {
     if (state == HIDDEN) {
-        state = REVEALED;
+        revealNeighbors();
     }
     //else if (state == EXPLODED) {
 
@@ -68,8 +70,38 @@ void Tile::draw() {
         sprite.setPosition(coordinate.x, coordinate.y);
         // Draw the flag on top of the tile
         toolbox.window.draw(sprite);
-        if (numMines != 0) {
-            sf::Sprite sprite2(toolbox.flag);
+        if (numNeighborMines == 1) {
+            sf::Sprite sprite2(toolbox.number1);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 2) {
+            sf::Sprite sprite2(toolbox.number2);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 3) {
+            sf::Sprite sprite2(toolbox.number3);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 4) {
+            sf::Sprite sprite2(toolbox.number4);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 5) {
+            sf::Sprite sprite2(toolbox.number5);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 6) {
+            sf::Sprite sprite2(toolbox.number6);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            // Draw the flag on top of the tile
+            toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 7) {
+            sf::Sprite sprite2(toolbox.number7);
             sprite2.setPosition(coordinate.x, coordinate.y);
             // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
@@ -85,16 +117,18 @@ void Tile::revealNeighbors() {
             // for in neighbors
                 // recursive
     if (state == HIDDEN) {
-        state == REVEALED;
-        numMines = 0;
-        for (int i; i < 8; i++) {
-            if (auto mine = dynamic_cast<Mine*>(neighbors[i])) {
-                numMines++;
+        state = REVEALED;
+        numNeighborMines = 0;
+        for (int i = 0; i < 8; i++) {
+            if (neighbors[i] != nullptr && dynamic_cast<Mine*>(neighbors[i])) {
+                numNeighborMines++;
             }
         }
-        if (numMines != 0) {
-            for (int i; i < 8; i++) {
-                neighbors[i]->revealNeighbors();
+        if (numNeighborMines == 0) {
+            for (Tile* neighborTile : neighbors) {
+                if (neighborTile) {
+                    neighborTile->onClickLeft();
+                }
             }
         }
     }

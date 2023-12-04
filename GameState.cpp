@@ -30,54 +30,49 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
         double randomX = xDistribution(gen);
         board[randomY][randomX] = std::make_unique<Mine>(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
     }
-    //int i = 0;
     for (int y = 0; y < _dimensions.y; y++) {
         for (int x = 0; x < _dimensions.x; x++) {
             if (y - 1 >= 0 && x - 1 >= 0) {
-                neighbors[0] = board[y][x].get();
+                neighbors[0] = board[y - 1][x - 1].get();
             } else {
                 neighbors[0] = nullptr;
             }
-            if (y >= 0 && x - 1 >= 0) {
-                neighbors[1] = board[y][x].get();
+            if (y - 1 >= 0) {
+                neighbors[1] = board[y - 1][x].get();
             } else {
                 neighbors[1] = nullptr;
             }
-            if (y + 1 >= 0 && x - 1 >= 0) {
-                neighbors[2] = board[y][x].get();
+            if (y - 1 >= 0 && x + 1 < _dimensions.x) {
+                neighbors[2] = board[y - 1][x + 1].get();
             } else {
                 neighbors[2] = nullptr;
             }
-            if (y - 1 >= 0 && x >= 0) {
-                neighbors[3] = board[y][x].get();
+            if (x - 1 >= 0) {
+                neighbors[3] = board[y][x - 1].get();
             } else {
                 neighbors[3] = nullptr;
             }
-            if (y + 1 >= 0 && x >= 0) {
-                neighbors[4] = board[y][x].get();
+            if (x + 1 < _dimensions.x) {
+                neighbors[4] = board[y][x + 1].get();
             } else {
                 neighbors[4] = nullptr;
             }
-            if (y - 1 >= 0 && x + 1 >= 0) {
-                neighbors[5] = board[y][x].get();
+            if (y + 1 < _dimensions.y && x - 1 >= 0) {
+                neighbors[5] = board[y + 1][x - 1].get();
             } else {
                 neighbors[5] = nullptr;
             }
-            if (y >= 0 && x + 1 >= 0) {
-                neighbors[6] = board[y][x].get();
+            if (y + 1 < _dimensions.y) {
+                neighbors[6] = board[y + 1][x].get();
             } else {
                 neighbors[6] = nullptr;
             }
-            if (y + 1 >= 0 && x + 1 >= 0) {
-                neighbors[7] = board[y][x].get();
+            if (y + 1 < _dimensions.y && x + 1 < _dimensions.x) {
+                neighbors[7] = board[y + 1][x + 1].get();
             } else {
                 neighbors[7] = nullptr;
             }
             board[y][x]->setNeighbors(neighbors);
-            /*
-            std::cout<<i;
-            std::cout<<" ";
-            i++;*/
         }
     }
 }

@@ -23,7 +23,7 @@ private:
     State state;
     sf::Sprite sprite;
     std::array<Tile*, 8> neighbors;
-    int numMines;
+    int numNeighborMines;
 };
 
 
