@@ -39,7 +39,6 @@ void Tile::onClickRight() {
         state = HIDDEN;
     }
 }
-
 void Tile::draw() {
     Toolbox& toolbox = Toolbox::getInstance();
     if (state == HIDDEN) {
@@ -61,7 +60,6 @@ void Tile::draw() {
         toolbox.window.draw(sprite2);
     }
     else if (state == REVEALED) {
-
         sf::Sprite sprite(toolbox.revealedTile);
         sprite.setPosition(coordinate.x, coordinate.y);
         // Draw the flag on top of the tile
@@ -95,10 +93,13 @@ void Tile::draw() {
             sf::Sprite sprite2(toolbox.number7);
             sprite2.setPosition(coordinate.x, coordinate.y);
             toolbox.window.draw(sprite2);
+        } else if (numNeighborMines == 8) {
+            sf::Sprite sprite2(toolbox.number8);
+            sprite2.setPosition(coordinate.x, coordinate.y);
+            toolbox.window.draw(sprite2);
         }
     }
 }
-
 void Tile::revealNeighbors() {
     // check if hidden
         // reveal
