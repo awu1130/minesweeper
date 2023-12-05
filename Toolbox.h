@@ -45,6 +45,9 @@ public:
     sf::Sprite spriteFaceLose(sf::Texture texture);
     sf::Sprite spriteFaceWin(sf::Texture texture);
     sf::Sprite spriteFaceHappy(sf::Texture texture); */
+    sf::Sprite* spriteFaceHappy;
+    sf::Sprite* spriteFaceLose;
+    sf::Sprite* spriteFaceWin;
 private:
     Toolbox();
 };

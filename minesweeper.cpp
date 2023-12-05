@@ -38,7 +38,7 @@ int launch() {
                             if (mousePosition.x >= currentTile->getLocation().x &&
                                 mousePosition.x <= currentTile->getLocation().x + 32 &&
                                 mousePosition.y >= currentTile->getLocation().y &&
-                                mousePosition.y <= currentTile->getLocation().y + 32) {
+                                mousePosition.y <= currentTile->getLocation().y + 32 && toolbox.gameState->getPlayStatus() != GameState::LOSS) {
                                 // Handle left/right-click on the current tile
                                 if (event.mouseButton.button == sf::Mouse::Right) {
                                     currentTile->onClickRight();
@@ -67,12 +67,6 @@ void restart() {
 }
 void render() {
     Toolbox& toolbox = Toolbox::getInstance();
-    /*
-    if (toolbox.gameState->getPlayStatus() == GameState::LOSS) {
-        toolbox.loseButton->getSprite()->setPosition(368,512);
-        toolbox.window.draw(*toolbox.loseButton->getSprite());
-        restart();
-    }*/
     // display tiles
     for (int y = 0; y < 25; ++y) {
         for (int x = 0; x < 16; ++x) {
@@ -80,8 +74,20 @@ void render() {
         }
     }
     // display buttons
-    toolbox.newGameButton->getSprite()->setPosition(368,512);
-    toolbox.window.draw(*toolbox.newGameButton->getSprite());
+    if (toolbox.gameState->getPlayStatus() == GameState::LOSS) {
+        toolbox.newGameButton->setSprite(toolbox.spriteFaceLose);
+        toolbox.newGameButton->getSprite()->setPosition(368,512);
+        toolbox.window.draw(*toolbox.newGameButton->getSprite());
+    } else if (toolbox.gameState->getPlayStatus() == GameState::WIN) {
+        toolbox.newGameButton->setSprite(toolbox.spriteFaceWin);
+        toolbox.newGameButton->getSprite()->setPosition(368,512);
+        toolbox.window.draw(*toolbox.newGameButton->getSprite());
+    }
+    else if (toolbox.gameState->getPlayStatus() == GameState::PLAYING){
+        toolbox.newGameButton->setSprite(toolbox.spriteFaceHappy);
+        toolbox.newGameButton->getSprite()->setPosition(368,512);
+        toolbox.window.draw(*toolbox.newGameButton->getSprite());
+    }
     toolbox.debugButton->getSprite()->setPosition(496,512);
     toolbox.window.draw(*toolbox.debugButton->getSprite());
     toolbox.testButton1->getSprite()->setPosition(560,512);

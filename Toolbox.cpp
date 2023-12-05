@@ -5,8 +5,8 @@
 
 // Constructor
 Toolbox::Toolbox() {
-    bool debugMode;
-    std::vector<std::array<int, 3>> originalMineStates; // Store original mine states
+    // debugMode;
+    // originalMineStates; // Store original mine states
     window.create(sf::VideoMode(800, 600), "P4 – Minesweeper, <Angelina Wu>");
     hiddenTile.loadFromFile("./images/tile_hidden.png");
     flag.loadFromFile("./images/flag.png");
@@ -36,14 +36,16 @@ Toolbox::Toolbox() {
     spriteButtonDebug->setPosition(debugButton->getPosition());
 
     newGameButton = new Button(sf::Vector2f(), restart);
-    sf::Sprite* spriteFaceHappy = new sf::Sprite(faceHappy);
+    spriteFaceHappy = new sf::Sprite(faceHappy);
+    spriteFaceLose = new sf::Sprite(faceLose);
+    spriteFaceWin = new sf::Sprite(faceWin);
     newGameButton->setSprite(spriteFaceHappy);
     spriteFaceHappy->setPosition(newGameButton->getPosition());
-
+    /*
     loseButton = new Button(sf::Vector2f(), restart);
     sf::Sprite* spriteFaceLose = new sf::Sprite(faceLose);
     loseButton->setSprite(spriteFaceHappy);
-    spriteFaceHappy->setPosition(loseButton->getPosition());
+    spriteFaceHappy->setPosition(loseButton->getPosition());*/
 
     testButton1 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
     sf::Sprite* spriteButtonTest1 = new sf::Sprite(buttonTest1);
