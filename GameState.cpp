@@ -4,6 +4,7 @@
 #include <iostream>
 #include <array>
 #include <fstream>
+#include <set>
 
 GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     // Seed the random number generator with the current time
@@ -11,6 +12,7 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> yDistribution(0, _dimensions.y);
     std::uniform_real_distribution<double> xDistribution(0, _dimensions.x);
+    // store unique random positions
 
     playStatus = PLAYING;
     numFlags = 0;
@@ -26,11 +28,26 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
         }
     }
     // create mines
+    // Set to store unique random positions
+    std::set<std::pair<int, int>> uniquePositions;
+
+    // Create mines
     for (int i = 0; i < _numberOfMines; i++) {
-        double randomY = yDistribution(gen);
-        double randomX = xDistribution(gen);
-        board[randomY][randomX] = std::make_unique<Mine>(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
+        double randomY;
+        double randomX;
+        std::pair<int, int> position;
+        // Generate unique random positions
+        do {
+            randomY = yDistribution(gen);
+            randomX = xDistribution(gen);
+            position = std::make_pair(static_cast<int>(randomY), static_cast<int>(randomX));
+        } while (uniquePositions.count(position) > 0);
+        uniquePositions.insert(position);
+
+        // Create a Mine at the chosen position
+        board[position.first][position.second] = std::make_unique<Mine>(sf::Vector2f((int)randomX * 32.0f, (int)randomY * 32.0f));
     }
+
     // create neighbors
     for (int y = 0; y < _dimensions.y; y++) {
         for (int x = 0; x < _dimensions.x; x++) {
@@ -82,14 +99,11 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
 GameState::GameState(const char* filepath) {
     // reading file part taken from my lab 8
     std::array<Tile*, 8> neighbors{};
-    cout<<"n";
     int dimensionX;
     int dimensionY;
     std::vector<vector<char>> fileDigits;
-    cout<<"j";
     ifstream file(filepath);
     if (file.is_open()) {
-        cout<<"m";
         std::string fileContent;
         std::string line;
         //x = line.length();
@@ -103,89 +117,72 @@ GameState::GameState(const char* filepath) {
             fileDigits.push_back(row);
             dimensionY++;
         }
+        // Remove blank lines
+        while (!fileDigits.empty() && fileDigits.back().empty()) {
+            fileDigits.pop_back();
+        }
     }
     // create the 2d vector with tile objects
-    cout<<"P";
-
+    numMines = 0;
     board.resize(dimensionY);
     for (int y = 0; y < dimensionY; y++) {
-        cout<<"K";
         board[y].resize(dimensionX);
         for (int x = 0; x < dimensionX; x++) {
-            cout<<"T";
-            if (fileDigits[y][x] == '0') {
-                board[y][x] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
-            } else {
+            if (fileDigits[y][x] == '1') {
                 board[y][x] = std::make_unique<Mine>(sf::Vector2f (int(x) * 32.0f, int(y) * 32.0f));
+                numMines++;
+            } else {
+                board[y][x] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
             }
         }
     }
-    cout<<"B";
+    std::cout<<numMines;
     // create neighbors
     for (int y = 0; y < dimensionY; y++) {
-        cout<<"G";
         for (int x = 0; x < dimensionX; x++) {
-            cout<<"R";
             if (y - 1 >= 0 && x - 1 >= 0) {
                 neighbors[0] = board[y - 1][x - 1].get();
-                cout<<"0";
             } else {
                 neighbors[0] = nullptr;
-                cout<<"1";
             }
             if (y - 1 >= 0) {
                 neighbors[1] = board[y - 1][x].get();
-                cout<<"2";
             } else {
                 neighbors[1] = nullptr;
-                cout<<"3";
             }
             if (y - 1 >= 0 && x + 1 < dimensionX) {
                 neighbors[2] = board[y - 1][x + 1].get();
-                cout<<"4";
             } else {
                 neighbors[2] = nullptr;
-                cout<<"5";
             }
             if (x - 1 >= 0) {
                 neighbors[3] = board[y][x - 1].get();
-                cout<<"6";
             } else {
                 neighbors[3] = nullptr;
-                cout<<"7";
             }
             if (x + 1 < dimensionX) {
                 neighbors[4] = board[y][x + 1].get();
-                cout<<"8";
             } else {
                 neighbors[4] = nullptr;
-                cout<<"9";
             }
             if (y + 1 < dimensionY && x - 1 >= 0) {
                 neighbors[5] = board[y + 1][x - 1].get();
-                cout<<"10";
             } else {
                 neighbors[5] = nullptr;
-                cout<<"11";
             }
             if (y + 1 < dimensionY) {
                 neighbors[6] = board[y + 1][x].get();
-                cout<<"12";
             } else {
                 neighbors[6] = nullptr;
-                cout<<"13";
             }
             if (y + 1 < dimensionY && x + 1 < dimensionX) {
                 neighbors[7] = board[y + 1][x + 1].get();
-                cout<<"14";
             } else {
                 neighbors[7] = nullptr;
-                cout<<"15";
             }
             board[y][x]->setNeighbors(neighbors);
         }
     }
-    cout<<"W"<<endl;
 }
 int GameState::getFlagCount() {
     numFlags = 0;
