@@ -4,7 +4,7 @@
 using namespace std;
 
 bool debugMode = false;
-std::vector<std::vector<Tile::State>> originalTileStates; // Store original states
+std::vector<std::array<int, 3>> originalMineStates; // Store original mine states
 
 int launch() {
     render();
@@ -31,46 +31,39 @@ void render() {
                     toolbox.gameState = new GameState();
                     // Reset debug mode and original states
                     debugMode = false;
-                    originalTileStates.clear();
+                    originalMineStates.clear();
                 } else if (mousePosition.x >= 496 && mousePosition.x <= 496 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     // Handle click on the debug button
                     toggleDebugMode();
                     if (debugMode == true) {
                         // Store original states if entering debug mode
-                        originalTileStates.clear();
-                        for (int y = 0; y < 25; ++y) {
-                            std::vector<Tile::State> rowStates;
-                            for (int x = 0; x < 16; ++x) {
-                                Tile* currentTile = toolbox.gameState->getTile(x, y);
-                                rowStates.push_back(currentTile->getState());
-                            }
-                            originalTileStates.push_back(rowStates);
-                        }
-
-                        // Change states to EXPLODED in debug mode
+                        originalMineStates.clear();
                         for (int y = 0; y < 25; ++y) {
                             for (int x = 0; x < 16; ++x) {
                                 Tile* currentTile = toolbox.gameState->getTile(x, y);
-                                // Check if it's a mine
                                 if (auto mine = dynamic_cast<Mine*>(currentTile)) {
+                                    originalMineStates.push_back({x, y, mine->getState()});
                                     mine->setState(Tile::EXPLODED);
                                 }
                             }
                         }
                     } else {
                         // Restore original states when exiting debug mode
-                        for (int y = 0; y < 25; ++y) {
-                            for (int x = 0; x < 16; ++x) {
-                                Tile* currentTile = toolbox.gameState->getTile(x, y);
-                                currentTile->setState(originalTileStates[y][x]);
+                        for (const auto& mineState : originalMineStates) {
+                            int x = mineState[0];
+                            int y = mineState[1];
+                            Tile* currentTile = toolbox.gameState->getTile(x, y);
+                            if (auto mine = dynamic_cast<Mine*>(currentTile)) {
+                                mine->setState((Tile::State) mineState[2]);
                             }
                         }
+                        originalMineStates.clear();
                     }
-                } else if (mousePosition.x >= 560 && mousePosition.x <= 560 + 64 &&
+            } else if (mousePosition.x >= 560 && mousePosition.x <= 560 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     // Handle click on test button 1
-                    // ...
+                    toolbox.gameState = new GameState("./boards/testboard1.brd");
                 } else if (mousePosition.x >= 624 && mousePosition.x <= 624 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     // Handle click on test button 2

@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <array>
+#include <fstream>
 
 GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     // Seed the random number generator with the current time
@@ -30,6 +31,7 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
         double randomX = xDistribution(gen);
         board[randomY][randomX] = std::make_unique<Mine>(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
     }
+    // create vectors
     for (int y = 0; y < _dimensions.y; y++) {
         for (int x = 0; x < _dimensions.x; x++) {
             if (y - 1 >= 0 && x - 1 >= 0) {
@@ -78,7 +80,24 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
 }
 
 GameState::GameState(const char* filepath) {
-
+    // taken from my lab 8
+    Toolbox& toolbox = Toolbox::getInstance();
+    ifstream file(filepath);
+    int i = 0;
+    if (file.is_open()) {
+        std::string fileContent;
+        std::string line;
+        toolbox.dimensionsX = line.length();
+        cout<<toolbox.dimensionsX;
+        // loop that reads every line into fileContent
+        while (std::getline(file, line)) {
+            i++;
+            fileContent += line + "\n";
+        }
+        cout<<fileContent;
+    }
+    toolbox.dimensionsY = i;
+    cout<<toolbox.dimensionsY;
 }
 int GameState::getFlagCount() {
     return numFlags;

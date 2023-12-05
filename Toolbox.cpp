@@ -5,6 +5,7 @@
 
 // Constructor
 Toolbox::Toolbox() {
+
     // Initialize member variables here
     window.create(sf::VideoMode(800, 600), "P4 – Minesweeper, <Angelina Wu>");
     hiddenTile.loadFromFile("./images/tile_hidden.png");
@@ -29,12 +30,12 @@ Toolbox::Toolbox() {
     // dynamically allocate gameState
     gameState = new GameState();
     // Creating sprites for buttons
-    debugButton = new Button(sf::Vector2f(300.0f, 100.0f), []() { std::cout << "Debug Button Clicked" << std::endl; });
+    debugButton = new Button(sf::Vector2f(300.0f, 100.0f), []() { std::cout << "debugButton" << std::endl; });
     sf::Sprite* spriteButtonDebug = new sf::Sprite(buttonDebug);
     debugButton->setSprite(spriteButtonDebug);
     spriteButtonDebug->setPosition(debugButton->getPosition());
 
-    newGameButton = new Button(sf::Vector2f(500.0f, 400.0f), []() { std::cout << "New Game Button Clicked" << std::endl; });
+    newGameButton = new Button(sf::Vector2f(500.0f, 400.0f), []() { std::cout << "newGame" << std::endl; });
     sf::Sprite* spriteFaceHappy = new sf::Sprite(faceHappy);
     newGameButton->setSprite(spriteFaceHappy);
     spriteFaceHappy->setPosition(newGameButton->getPosition());

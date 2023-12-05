@@ -110,7 +110,6 @@ void Tile::draw() {
 }
 
 void Tile::revealNeighbors() {
-    // Function to set the image for the tile
     // check if hidden
         // reveal
         // if not bomb

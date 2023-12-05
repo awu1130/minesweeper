@@ -13,7 +13,9 @@ public:
     Button* testButton1; // Loads test board #1
     Button* testButton2; // Loads test board #2
     static Toolbox& getInstance();
-    Button* debug;
+    int dimensionsX;
+    int dimensionsY;
+    // draw digits function, use get flags count in game state
     sf::Texture hiddenTile;
     sf::Texture flag;
     sf::Texture revealedTile;

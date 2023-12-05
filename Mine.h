@@ -1,6 +1,8 @@
 #pragma once
 
 #include <array>
+#include <vector>
+#include <tuple>
 #include "Tile.h"
 
 class Mine : public Tile {

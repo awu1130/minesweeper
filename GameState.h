@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Toolbox.h"
 #include "Tile.h"
 #include "Mine.h"
 #include <memory>

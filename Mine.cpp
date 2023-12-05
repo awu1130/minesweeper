@@ -65,5 +65,12 @@ void Mine::draw() {
         toolbox.gameState->setPlayStatus(GameState::LOSS);
         toolbox.gameState->getPlayStatus();
     }
+    /*
+    else if (state == REVEALED) {
+        sf::Sprite sprite(toolbox.revealedTile);
+        sprite.setPosition(coordinate.x, coordinate.y);
+        // Draw the flag on top of the tile
+        toolbox.window.draw(sprite);
+    }*/
 }
 
