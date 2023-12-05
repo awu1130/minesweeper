@@ -13,8 +13,8 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     std::uniform_real_distribution<double> xDistribution(0, _dimensions.x);
 
     playStatus = PLAYING;
-    //numFlags = 0;
-    numMines = 0;
+    numFlags = 0;
+    numMines = _numberOfMines;
     std::array<Tile*, 8> neighbors{};
 
     // create the 2D vector with tile objects
@@ -26,7 +26,7 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
         }
     }
     // create mines
-    for (numMines; numMines < _numberOfMines; numMines++) {
+    for (int i = 0; i < _numberOfMines; i++) {
         double randomY = yDistribution(gen);
         double randomX = xDistribution(gen);
         board[randomY][randomX] = std::make_unique<Mine>(sf::Vector2f (int(randomX) * 32.0f, int(randomY) * 32.0f));
@@ -106,6 +106,7 @@ GameState::GameState(const char* filepath) {
     }
     // create the 2d vector with tile objects
     cout<<"P";
+
     board.resize(dimensionY);
     for (int y = 0; y < dimensionY; y++) {
         cout<<"K";
@@ -117,14 +118,13 @@ GameState::GameState(const char* filepath) {
             } else {
                 board[y][x] = std::make_unique<Mine>(sf::Vector2f (int(x) * 32.0f, int(y) * 32.0f));
             }
-
         }
     }
     cout<<"B";
     // create neighbors
     for (int y = 0; y < dimensionY; y++) {
         cout<<"G";
-        for (int x = 0; x < 25; x++) {
+        for (int x = 0; x < dimensionX; x++) {
             cout<<"R";
             if (y - 1 >= 0 && x - 1 >= 0) {
                 neighbors[0] = board[y - 1][x - 1].get();
@@ -188,11 +188,19 @@ GameState::GameState(const char* filepath) {
     cout<<"W"<<endl;
 }
 int GameState::getFlagCount() {
-
+    numFlags = 0;
+    int numRows = board.size();
+    int numCols = (numRows > 0) ? board[0].size() : 0;
+    for (int y = 0; y < numRows; ++y) {
+        for (int x = 0; x < numCols; ++x) {
+            if (board[y][x]->getState() == Tile::FLAGGED) {
+                numFlags++;
+            }
+        }
+    }
     return numFlags;
 }
 int GameState::getMineCount() {
-
     return numMines;
 }
 Tile* GameState::getTile(int x, int y) {

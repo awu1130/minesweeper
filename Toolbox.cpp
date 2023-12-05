@@ -7,6 +7,7 @@
 Toolbox::Toolbox() {
     // debugMode;
     // originalMineStates; // Store original mine states
+
     window.create(sf::VideoMode(800, 600), "P4 – Minesweeper, <Angelina Wu>");
     hiddenTile.loadFromFile("./images/tile_hidden.png");
     flag.loadFromFile("./images/flag.png");
@@ -14,6 +15,7 @@ Toolbox::Toolbox() {
     mine.loadFromFile("./images/mine.png");
     buttonTest1.loadFromFile("./images/test_1.png");
     buttonTest2.loadFromFile("./images/test_2.png");
+    buttonTest3.loadFromFile("./images/Test_3.png");
     buttonDebug.loadFromFile("./images/debug.png");
     faceLose.loadFromFile("./images/face_lose.png");
     faceWin.loadFromFile("./images/face_win.png");
@@ -26,6 +28,7 @@ Toolbox::Toolbox() {
     number6.loadFromFile("./images/number_6.png");
     number7.loadFromFile("./images/number_7.png");
     number8.loadFromFile("./images/number_8.png");
+    digits.loadFromFile("./images/digits.png");
     // load files
     // dynamically allocate gameState
     gameState = new GameState();
@@ -41,11 +44,6 @@ Toolbox::Toolbox() {
     spriteFaceWin = new sf::Sprite(faceWin);
     newGameButton->setSprite(spriteFaceHappy);
     spriteFaceHappy->setPosition(newGameButton->getPosition());
-    /*
-    loseButton = new Button(sf::Vector2f(), restart);
-    sf::Sprite* spriteFaceLose = new sf::Sprite(faceLose);
-    loseButton->setSprite(spriteFaceHappy);
-    spriteFaceHappy->setPosition(loseButton->getPosition());*/
 
     testButton1 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
     sf::Sprite* spriteButtonTest1 = new sf::Sprite(buttonTest1);
@@ -55,6 +53,11 @@ Toolbox::Toolbox() {
     testButton2 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
     sf::Sprite* spriteButtonTest2 = new sf::Sprite(buttonTest2);
     testButton2->setSprite(spriteButtonTest2);
+    spriteButtonTest2->setPosition(newGameButton->getPosition());
+
+    testButton3 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
+    sf::Sprite* spriteButtonTest3 = new sf::Sprite(buttonTest3);
+    testButton3->setSprite(spriteButtonTest3);
     spriteButtonTest2->setPosition(newGameButton->getPosition());
 }
 // singleton ensures instance is created only once

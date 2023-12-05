@@ -17,6 +17,7 @@ public:
     Button* loseButton;
     Button* testButton1; // Loads test board #1
     Button* testButton2; // Loads test board #2
+    Button* testButton3; // Loads test board #2
     static Toolbox& getInstance();
 
     sf::Texture hiddenTile;
@@ -25,6 +26,7 @@ public:
     sf::Texture mine;
     sf::Texture buttonTest1;
     sf::Texture buttonTest2;
+    sf::Texture buttonTest3;
     sf::Texture buttonDebug;
     sf::Texture faceLose;
     sf::Texture faceWin;
@@ -37,6 +39,7 @@ public:
     sf::Texture number6;
     sf::Texture number7;
     sf::Texture number8;
+    sf::Texture digits;
     /*
     sf::Sprite spriteHiddenTile(sf::Texture texture);
     sf::Sprite spriteButtonTest1(sf::Texture texture);

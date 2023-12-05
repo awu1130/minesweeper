@@ -34,11 +34,9 @@ void Tile::onClickLeft() {
 void Tile::onClickRight() {
     if (state == HIDDEN) {
         state = FLAGGED;
-        // subtract one from mine count
     }
     else if (state == FLAGGED){
         state = HIDDEN;
-        // add one to mine count
     }
 }
 
@@ -53,7 +51,6 @@ void Tile::draw() {
     }
     else if (state == FLAGGED) {
         // Load the flag texture
-        // subtract one from mine count
         sf::Sprite sprite(toolbox.hiddenTile);
         // Set the position of the sprite
         sprite.setPosition(coordinate.x, coordinate.y);
@@ -64,6 +61,7 @@ void Tile::draw() {
         toolbox.window.draw(sprite2);
     }
     else if (state == REVEALED) {
+
         sf::Sprite sprite(toolbox.revealedTile);
         sprite.setPosition(coordinate.x, coordinate.y);
         // Draw the flag on top of the tile
@@ -71,37 +69,31 @@ void Tile::draw() {
         if (numNeighborMines == 1) {
             sf::Sprite sprite2(toolbox.number1);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
+            // Draw the number on top of the tile
             toolbox.window.draw(sprite2);
         } else if (numNeighborMines == 2) {
             sf::Sprite sprite2(toolbox.number2);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
         } else if (numNeighborMines == 3) {
             sf::Sprite sprite2(toolbox.number3);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
         } else if (numNeighborMines == 4) {
             sf::Sprite sprite2(toolbox.number4);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
         } else if (numNeighborMines == 5) {
             sf::Sprite sprite2(toolbox.number5);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
         } else if (numNeighborMines == 6) {
             sf::Sprite sprite2(toolbox.number6);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
         } else if (numNeighborMines == 7) {
             sf::Sprite sprite2(toolbox.number7);
             sprite2.setPosition(coordinate.x, coordinate.y);
-            // Draw the flag on top of the tile
             toolbox.window.draw(sprite2);
         }
     }

@@ -1,6 +1,7 @@
 #include "minesweeper.h"
 #include "Toolbox.h"
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 int launch() {
@@ -29,6 +30,11 @@ int launch() {
                     // Handle click on test button 2
                     delete toolbox.gameState;
                     toolbox.gameState = new GameState("./boards/testboard2.brd");
+                } else if (mousePosition.x >= 688 && mousePosition.x <= 688 + 64 &&
+                           mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
+                    // Handle click on test button 3
+                    delete toolbox.gameState;
+                    toolbox.gameState = new GameState("./boards/testboard3.brd");
                 } else {
                     // The click is not on any button, so it must be on a tile
                     // Iterate over tiles and check for left/right-click on each tile
@@ -67,9 +73,22 @@ void restart() {
 }
 void render() {
     Toolbox& toolbox = Toolbox::getInstance();
+    // check win
+    int numRevealed = 0;
+    for (int y = 0; y < 25; y++) {
+        for (int x = 0; x < 16; x++) {
+            Tile* currentTile = toolbox.gameState->getTile(x, y);
+            if (typeid(*currentTile) == typeid(Tile) && currentTile->getState() == Tile::REVEALED) {
+                numRevealed++;
+            }
+        }
+    }
+    if ((numRevealed + toolbox.gameState->getMineCount()) == 400) {
+        toolbox.gameState->setPlayStatus(GameState::WIN);
+    }
     // display tiles
-    for (int y = 0; y < 25; ++y) {
-        for (int x = 0; x < 16; ++x) {
+    for (int y = 0; y < 25; y++) {
+        for (int x = 0; x < 16; x++) {
             toolbox.gameState->getTile(x, y)->draw();
         }
     }
@@ -78,6 +97,19 @@ void render() {
         toolbox.newGameButton->setSprite(toolbox.spriteFaceLose);
         toolbox.newGameButton->getSprite()->setPosition(368,512);
         toolbox.window.draw(*toolbox.newGameButton->getSprite());
+        /* fix if have time
+        for (int y = 0; y < 25; ++y) {
+            for (int x = 0; x < 16; ++x) {
+                Tile* currentTile = toolbox.gameState->getTile(, y);
+                if (auto mine = dynamic_cast<Mine*>(currentTile)) {
+                    sf::Texture texture;
+                    texture.loadFromFile("./images/mine.png");
+                    sf::Sprite sprite;
+                    sprite.setTexture(texture);
+                    toolbox.window.draw(sprite);
+                }
+            }
+        } */
     } else if (toolbox.gameState->getPlayStatus() == GameState::WIN) {
         toolbox.newGameButton->setSprite(toolbox.spriteFaceWin);
         toolbox.newGameButton->getSprite()->setPosition(368,512);
@@ -88,13 +120,130 @@ void render() {
         toolbox.newGameButton->getSprite()->setPosition(368,512);
         toolbox.window.draw(*toolbox.newGameButton->getSprite());
     }
+    // display mine counter
+    int mineDisplay = toolbox.gameState->getMineCount() - toolbox.gameState->getFlagCount();
+    int absMineDisplay = std::abs(mineDisplay);
+    int onesDig = absMineDisplay % 10;
+    int tensDig = absMineDisplay / 10;
+    sf::Texture oneDigImg;
+    sf::IntRect textureRect;
+    switch (onesDig) {
+        case 0:
+            // Define the rectangle that represents the part of the image you want
+            textureRect = sf::IntRect(0, 0, 21, 32); // (left, top, width, height)
+            // Create a new texture using only the specified part
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 1:
+            textureRect = sf::IntRect(21, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 2:
+            textureRect = sf::IntRect(42, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 3:
+            textureRect = sf::IntRect(63, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 4:
+            textureRect = sf::IntRect(84, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 5:
+            textureRect = sf::IntRect(105, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 6:
+            textureRect = sf::IntRect(126, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 7:
+            textureRect = sf::IntRect(147, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 8:
+            textureRect = sf::IntRect(168, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+        case 9:
+            textureRect = sf::IntRect(189, 0, 21, 32); // (left, top, width, height)
+            oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
+            break;
+    }
+    sf::Texture tensDigImg;
+    sf::IntRect tensTextureRect;
+    switch (tensDig) {
+        case 0:
+            // Define the rectangle that represents the part of the image you want
+            tensTextureRect = sf::IntRect(0, 0, 21, 32); // (left, top, width, height)
+            // Create a new texture using only the specified part
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 1:
+            tensTextureRect = sf::IntRect(21, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 2:
+            tensTextureRect = sf::IntRect(42, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 3:
+            tensTextureRect = sf::IntRect(63, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 4:
+            tensTextureRect = sf::IntRect(84, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 5:
+            tensTextureRect = sf::IntRect(105, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 6:
+            tensTextureRect = sf::IntRect(126, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 7:
+            tensTextureRect = sf::IntRect(147, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 8:
+            tensTextureRect = sf::IntRect(168, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+        case 9:
+            tensTextureRect = sf::IntRect(189, 0, 21, 32); // (left, top, width, height)
+            tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
+            break;
+    }
+    sf::IntRect negTextureRect;
+    sf::Texture negDigImg;
+    if (mineDisplay < 0) {
+        negTextureRect = sf::IntRect(210, 0, 21, 32);
+        negDigImg.loadFromImage(toolbox.digits.copyToImage(), negTextureRect);
+    } else {
+        negTextureRect = sf::IntRect(0, 0, 21, 32);
+        negDigImg.loadFromImage(toolbox.digits.copyToImage(), negTextureRect);
+    }
+    sf::Sprite sprite(oneDigImg);
+    sprite.setPosition(42, 512);
+    toolbox.window.draw(sprite);
+    sf::Sprite sprite2(tensDigImg);
+    sprite2.setPosition(21, 512);
+    toolbox.window.draw(sprite2);
+    sf::Sprite sprite3(negDigImg);
+    sprite3.setPosition(0, 512);
+    toolbox.window.draw(sprite3);
+    //display buttons
     toolbox.debugButton->getSprite()->setPosition(496,512);
     toolbox.window.draw(*toolbox.debugButton->getSprite());
     toolbox.testButton1->getSprite()->setPosition(560,512);
     toolbox.window.draw(*toolbox.testButton1->getSprite());
     toolbox.testButton2->getSprite()->setPosition(624,512);
     toolbox.window.draw(*toolbox.testButton2->getSprite());
-
+    toolbox.testButton3->getSprite()->setPosition(688,512);
+    toolbox.window.draw(*toolbox.testButton3->getSprite());
     toolbox.window.display();
 }
 
