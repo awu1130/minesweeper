@@ -318,7 +318,7 @@ void render() {
 
 void toggleDebugMode() {
     Toolbox& toolbox = Toolbox::getInstance();
-    if (!toolbox.debugMode) {
+    if (!getDebugMode()) {
         toolbox.debugMode = true;
     }
     else {
