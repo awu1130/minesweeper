@@ -31,7 +31,7 @@ Toolbox::Toolbox() {
     digits.loadFromFile("./images/digits.png");
     // load files
     // dynamically allocate gameState
-    gameState = new GameState();
+    gameState = new GameState(boardDimensions);
     // Creating sprites for buttons
     debugButton = new Button(sf::Vector2f(), toggleDebugMode);
     sf::Sprite* spriteButtonDebug = new sf::Sprite(buttonDebug);
@@ -45,17 +45,17 @@ Toolbox::Toolbox() {
     newGameButton->setSprite(spriteFaceHappy);
     spriteFaceHappy->setPosition(newGameButton->getPosition());
 
-    testButton1 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
+    testButton1 = new Button(sf::Vector2f(), loadTestButton1);
     sf::Sprite* spriteButtonTest1 = new sf::Sprite(buttonTest1);
     testButton1->setSprite(spriteButtonTest1);
     spriteButtonTest1->setPosition(testButton1->getPosition());
 
-    testButton2 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
+    testButton2 = new Button(sf::Vector2f(), loadTestButton2);
     sf::Sprite* spriteButtonTest2 = new sf::Sprite(buttonTest2);
     testButton2->setSprite(spriteButtonTest2);
     spriteButtonTest2->setPosition(newGameButton->getPosition());
 
-    testButton3 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
+    testButton3 = new Button(sf::Vector2f(), loadTestButton3);
     sf::Sprite* spriteButtonTest3 = new sf::Sprite(buttonTest3);
     testButton3->setSprite(spriteButtonTest3);
     spriteButtonTest2->setPosition(newGameButton->getPosition());

@@ -13,7 +13,6 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
     std::uniform_real_distribution<double> yDistribution(0, _dimensions.y);
     std::uniform_real_distribution<double> xDistribution(0, _dimensions.x);
     // store unique random positions
-
     playStatus = PLAYING;
     numFlags = 0;
     numMines = _numberOfMines;
@@ -43,9 +42,8 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
             position = std::make_pair(static_cast<int>(randomY), static_cast<int>(randomX));
         } while (uniquePositions.count(position) > 0);
         uniquePositions.insert(position);
-
         // Create a Mine at the chosen position
-        board[position.first][position.second] = std::make_unique<Mine>(sf::Vector2f((int)randomX * 32.0f, (int)randomY * 32.0f));
+        board[position.first][position.second] = std::make_unique<Mine>(sf::Vector2f(int(randomX) * 32.0f, int(randomY) * 32.0f));
     }
 
     // create neighbors
@@ -98,17 +96,16 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
 
 GameState::GameState(const char* filepath) {
     // reading file part taken from my lab 8
+    playStatus = PLAYING;
     std::array<Tile*, 8> neighbors{};
-    int dimensionX;
-    int dimensionY;
+    int dimensionX = 0;
+    int dimensionY = 0;
     std::vector<vector<char>> fileDigits;
     ifstream file(filepath);
     if (file.is_open()) {
-        std::string fileContent;
         std::string line;
-        //x = line.length();
-        // loop that reads every line into fileContent
-        while (std::getline(file, line)) {
+        // Read the first line separately
+        if (std::getline(file, line)) {
             dimensionX = line.length();
             std::vector<char> row;
             for (int i = 0; i < dimensionX; i++) {
@@ -117,26 +114,34 @@ GameState::GameState(const char* filepath) {
             fileDigits.push_back(row);
             dimensionY++;
         }
-        // Remove blank lines
-        while (!fileDigits.empty() && fileDigits.back().empty()) {
-            fileDigits.pop_back();
+        // Loop that reads every remaining line into fileContent
+        while (std::getline(file, line)) {
+            cout << dimensionX << endl;
+            // Check if the line is not empty before processing
+            if (!line.empty()) {
+                std::vector<char> row;
+                for (int i = 0; i < dimensionX; i++) {
+                    row.push_back(line[i]);
+                }
+                fileDigits.push_back(row);
+                dimensionY++;
+            }
         }
     }
     // create the 2d vector with tile objects
-    numMines = 0;
     board.resize(dimensionY);
     for (int y = 0; y < dimensionY; y++) {
         board[y].resize(dimensionX);
         for (int x = 0; x < dimensionX; x++) {
-            if (fileDigits[y][x] == '1') {
-                board[y][x] = std::make_unique<Mine>(sf::Vector2f (int(x) * 32.0f, int(y) * 32.0f));
-                numMines++;
-            } else {
+            if (fileDigits[y][x] == '0') {
                 board[y][x] = std::make_unique<Tile>(sf::Vector2f(float(x) * 32.0f, float(y) * 32.0f));
+            } else {
+                board[y][x] = std::make_unique<Mine>(sf::Vector2f (float(x) * 32.0f, float(y) * 32.0f));
+                numMines++;
             }
         }
     }
-    std::cout<<numMines;
+    std::cout<<numMines<<endl;
     // create neighbors
     for (int y = 0; y < dimensionY; y++) {
         for (int x = 0; x < dimensionX; x++) {

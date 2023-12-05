@@ -22,24 +22,18 @@ int launch() {
                     toolbox.debugButton->onClick();
                 } else if (mousePosition.x >= 560 && mousePosition.x <= 560 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
-                    // Handle click on test button 1
-                    delete toolbox.gameState;
-                    toolbox.gameState = new GameState("./boards/testboard1.brd");
+                    toolbox.testButton1->onClick();
                 } else if (mousePosition.x >= 624 && mousePosition.x <= 624 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
-                    // Handle click on test button 2
-                    delete toolbox.gameState;
-                    toolbox.gameState = new GameState("./boards/testboard2.brd");
+                    toolbox.testButton2->onClick();
                 } else if (mousePosition.x >= 688 && mousePosition.x <= 688 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
-                    // Handle click on test button 3
-                    delete toolbox.gameState;
-                    toolbox.gameState = new GameState("./boards/testboard3.brd");
+                    toolbox.testButton3->onClick();
                 } else {
                     // The click is not on any button, so it must be on a tile
                     // Iterate over tiles and check for left/right-click on each tile
-                    for (int y = 0; y < 25; ++y) {
-                        for (int x = 0; x < 16; ++x) {
+                    for (int y = 0; y < toolbox.boardDimensions.x; ++y) {
+                        for (int x = 0; x < toolbox.boardDimensions.y; ++x) {
                             Tile *currentTile = toolbox.gameState->getTile(x, y);
                             if (mousePosition.x >= currentTile->getLocation().x &&
                                 mousePosition.x <= currentTile->getLocation().x + 32 &&
@@ -62,6 +56,21 @@ int launch() {
     }
     return 0;
 }
+void loadTestButton1() {
+    Toolbox& toolbox = Toolbox::getInstance();
+    delete toolbox.gameState;
+    toolbox.gameState = new GameState("./boards/testboard1.brd");
+}
+void loadTestButton2() {
+    Toolbox& toolbox = Toolbox::getInstance();
+    delete toolbox.gameState;
+    toolbox.gameState = new GameState("./boards/testboard2.brd");
+}
+void loadTestButton3() {
+    Toolbox& toolbox = Toolbox::getInstance();
+    delete toolbox.gameState;
+    toolbox.gameState = new GameState("./boards/testboard3.brd");
+}
 void restart() {
     Toolbox& toolbox = Toolbox::getInstance();
     delete toolbox.gameState;
@@ -75,8 +84,8 @@ void render() {
     Toolbox& toolbox = Toolbox::getInstance();
     // check win
     int numRevealed = 0;
-    for (int y = 0; y < 25; y++) {
-        for (int x = 0; x < 16; x++) {
+    for (int y = 0; y < toolbox.boardDimensions.x; y++) {
+        for (int x = 0; x < toolbox.boardDimensions.y; x++) {
             Tile* currentTile = toolbox.gameState->getTile(x, y);
             if (typeid(*currentTile) == typeid(Tile) && currentTile->getState() == Tile::REVEALED) {
                 numRevealed++;
@@ -87,8 +96,8 @@ void render() {
         toolbox.gameState->setPlayStatus(GameState::WIN);
     }
     // display tiles
-    for (int y = 0; y < 25; y++) {
-        for (int x = 0; x < 16; x++) {
+    for (int y = 0; y < toolbox.boardDimensions.x; y++) {
+        for (int x = 0; x < toolbox.boardDimensions.y; x++) {
             toolbox.gameState->getTile(x, y)->draw();
         }
     }
@@ -97,7 +106,7 @@ void render() {
         toolbox.newGameButton->setSprite(toolbox.spriteFaceLose);
         toolbox.newGameButton->getSprite()->setPosition(368,512);
         toolbox.window.draw(*toolbox.newGameButton->getSprite());
-        /* fix if have time
+        /* fix if have time DYLAN SAID IDC YAYYYYY
         for (int y = 0; y < 25; ++y) {
             for (int x = 0; x < 16; ++x) {
                 Tile* currentTile = toolbox.gameState->getTile(, y);
@@ -124,7 +133,8 @@ void render() {
     int mineDisplay = toolbox.gameState->getMineCount() - toolbox.gameState->getFlagCount();
     int absMineDisplay = std::abs(mineDisplay);
     int onesDig = absMineDisplay % 10;
-    int tensDig = absMineDisplay / 10;
+    absMineDisplay = absMineDisplay / 10;
+    int tensDig = absMineDisplay % 10;
     sf::Texture oneDigImg;
     sf::IntRect textureRect;
     switch (onesDig) {
@@ -217,14 +227,75 @@ void render() {
             tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
             break;
     }
-    sf::IntRect negTextureRect;
-    sf::Texture negDigImg;
-    if (mineDisplay < 0) {
-        negTextureRect = sf::IntRect(210, 0, 21, 32);
-        negDigImg.loadFromImage(toolbox.digits.copyToImage(), negTextureRect);
-    } else {
-        negTextureRect = sf::IntRect(0, 0, 21, 32);
-        negDigImg.loadFromImage(toolbox.digits.copyToImage(), negTextureRect);
+    absMineDisplay = absMineDisplay / 10;
+    if (std::abs(mineDisplay) > 99) {
+        int hundsDig = absMineDisplay % 10;
+        sf::Texture hundsDigImg;
+        sf::IntRect hundsTextureRect;
+        switch (hundsDig) {
+            case 0:
+                // Define the rectangle that represents the part of the image you want
+                hundsTextureRect = sf::IntRect(0, 0, 21, 32); // (left, top, width, height)
+                // Create a new texture using only the specified part
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 1:
+                hundsTextureRect = sf::IntRect(21, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 2:
+                hundsTextureRect = sf::IntRect(42, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 3:
+                hundsTextureRect = sf::IntRect(63, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 4:
+                hundsTextureRect = sf::IntRect(84, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 5:
+                hundsTextureRect = sf::IntRect(105, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 6:
+                hundsTextureRect = sf::IntRect(126, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 7:
+                hundsTextureRect = sf::IntRect(147, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 8:
+                hundsTextureRect = sf::IntRect(168, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+            case 9:
+                hundsTextureRect = sf::IntRect(189, 0, 21, 32); // (left, top, width, height)
+                hundsDigImg.loadFromImage(toolbox.digits.copyToImage(), hundsTextureRect);
+                break;
+        }
+        sf::Sprite sprite3(hundsDigImg);
+        sprite3.setPosition(0, 512);
+        toolbox.window.draw(sprite3);
+    }
+    else {
+        sf::IntRect negTextureRect;
+        sf::Texture negDigImg;
+        if (mineDisplay < 0) {
+            negTextureRect = sf::IntRect(210, 0, 21, 32);
+            negDigImg.loadFromImage(toolbox.digits.copyToImage(), negTextureRect);
+            sf::Sprite sprite3(negDigImg);
+            sprite3.setPosition(0, 512);
+            toolbox.window.draw(sprite3);
+        } else {
+            negTextureRect = sf::IntRect(0, 0, 21, 32);
+            negDigImg.loadFromImage(toolbox.digits.copyToImage(), negTextureRect);
+            sf::Sprite sprite3(negDigImg);
+            sprite3.setPosition(0, 512);
+            toolbox.window.draw(sprite3);
+        }
     }
     sf::Sprite sprite(oneDigImg);
     sprite.setPosition(42, 512);
@@ -232,9 +303,7 @@ void render() {
     sf::Sprite sprite2(tensDigImg);
     sprite2.setPosition(21, 512);
     toolbox.window.draw(sprite2);
-    sf::Sprite sprite3(negDigImg);
-    sprite3.setPosition(0, 512);
-    toolbox.window.draw(sprite3);
+
     //display buttons
     toolbox.debugButton->getSprite()->setPosition(496,512);
     toolbox.window.draw(*toolbox.debugButton->getSprite());
@@ -259,8 +328,8 @@ void toggleDebugMode() {
     if (toolbox.debugMode) {
         // Store original states if entering debug mode
         toolbox.originalMineStates.clear();
-        for (int y = 0; y < 25; ++y) {
-            for (int x = 0; x < 16; ++x) {
+        for (int y = 0; y < toolbox.boardDimensions.x; ++y) {
+            for (int x = 0; x < toolbox.boardDimensions.y; ++x) {
                 Tile* currentTile = toolbox.gameState->getTile(x, y);
                 if (auto mine = dynamic_cast<Mine*>(currentTile)) {
                     toolbox.originalMineStates.push_back({x, y, mine->getState()});

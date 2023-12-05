@@ -3,7 +3,6 @@
 Button::Button(sf::Vector2f _position, std::function<void(void)> _onClick) {
     coordinate = _position;
     this->_onClick = _onClick;
-    // sf::Mouse getPosition;
 }
 sf::Vector2f Button::getPosition() {
     return coordinate;
