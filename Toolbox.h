@@ -2,20 +2,23 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
 #include "Button.h"
+#include "minesweeper.h"
 using namespace std;
 
 class Toolbox {
 public:
+    bool debugMode;
+    std::vector<std::array<int, 3>> originalMineStates; // Store original mine states
+
     sf::RenderWindow window; // SFML application window
     GameState* gameState; // Primary game state representation
     Button* debugButton; // Reveals mines in debug mode
     Button* newGameButton; // Resets / starts new game
+    Button* loseButton;
     Button* testButton1; // Loads test board #1
     Button* testButton2; // Loads test board #2
     static Toolbox& getInstance();
-    int dimensionsX;
-    int dimensionsY;
-    // draw digits function, use get flags count in game state
+
     sf::Texture hiddenTile;
     sf::Texture flag;
     sf::Texture revealedTile;

@@ -52,7 +52,17 @@ void Mine::draw() {
         // Draw the flag on top of the tile
         toolbox.window.draw(sprite2);
     }
-    else if (state == EXPLODED) {
+    else if (state == REVEALED) {
+        // subtract one from mine count
+        sf::Sprite sprite(toolbox.hiddenTile);
+        // Set the position of the sprite
+        sprite.setPosition(coordinate.x, coordinate.y);
+        toolbox.window.draw(sprite);
+        sf::Sprite sprite2(toolbox.mine);
+        sprite2.setPosition(coordinate.x, coordinate.y);
+        // Draw the mine on top of the tile
+        toolbox.window.draw(sprite2);
+    } else if (state == EXPLODED) {
         // subtract one from mine count
         sf::Sprite sprite(toolbox.revealedTile);
         // Set the position of the sprite
@@ -63,14 +73,7 @@ void Mine::draw() {
         // Draw the mine on top of the tile
         toolbox.window.draw(sprite2);
         toolbox.gameState->setPlayStatus(GameState::LOSS);
-        toolbox.gameState->getPlayStatus();
+        //toolbox.gameState->getPlayStatus();
     }
-    /*
-    else if (state == REVEALED) {
-        sf::Sprite sprite(toolbox.revealedTile);
-        sprite.setPosition(coordinate.x, coordinate.y);
-        // Draw the flag on top of the tile
-        toolbox.window.draw(sprite);
-    }*/
 }
 

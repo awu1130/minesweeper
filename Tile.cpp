@@ -22,8 +22,6 @@ void Tile::setState(State _state) {
 }
 void Tile::setNeighbors(std::array<Tile*, 8> _neighbors) {
     neighbors = _neighbors;
-
-
 }
 void Tile::onClickLeft() {
     if (state == HIDDEN) {

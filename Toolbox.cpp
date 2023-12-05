@@ -5,8 +5,8 @@
 
 // Constructor
 Toolbox::Toolbox() {
-
-    // Initialize member variables here
+    bool debugMode;
+    std::vector<std::array<int, 3>> originalMineStates; // Store original mine states
     window.create(sf::VideoMode(800, 600), "P4 – Minesweeper, <Angelina Wu>");
     hiddenTile.loadFromFile("./images/tile_hidden.png");
     flag.loadFromFile("./images/flag.png");
@@ -30,22 +30,27 @@ Toolbox::Toolbox() {
     // dynamically allocate gameState
     gameState = new GameState();
     // Creating sprites for buttons
-    debugButton = new Button(sf::Vector2f(300.0f, 100.0f), []() { std::cout << "debugButton" << std::endl; });
+    debugButton = new Button(sf::Vector2f(), toggleDebugMode);
     sf::Sprite* spriteButtonDebug = new sf::Sprite(buttonDebug);
     debugButton->setSprite(spriteButtonDebug);
     spriteButtonDebug->setPosition(debugButton->getPosition());
 
-    newGameButton = new Button(sf::Vector2f(500.0f, 400.0f), []() { std::cout << "newGame" << std::endl; });
+    newGameButton = new Button(sf::Vector2f(), restart);
     sf::Sprite* spriteFaceHappy = new sf::Sprite(faceHappy);
     newGameButton->setSprite(spriteFaceHappy);
     spriteFaceHappy->setPosition(newGameButton->getPosition());
 
-    testButton1 = new Button(sf::Vector2f(500.0f, 400.0f), []() { std::cout << "New Game Button Clicked" << std::endl; });
+    loseButton = new Button(sf::Vector2f(), restart);
+    sf::Sprite* spriteFaceLose = new sf::Sprite(faceLose);
+    loseButton->setSprite(spriteFaceHappy);
+    spriteFaceHappy->setPosition(loseButton->getPosition());
+
+    testButton1 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
     sf::Sprite* spriteButtonTest1 = new sf::Sprite(buttonTest1);
     testButton1->setSprite(spriteButtonTest1);
     spriteButtonTest1->setPosition(testButton1->getPosition());
 
-    testButton2 = new Button(sf::Vector2f(500.0f, 400.0f), []() { std::cout << "New Game Button Clicked" << std::endl; });
+    testButton2 = new Button(sf::Vector2f(), []() { std::cout << "" << std::endl; });
     sf::Sprite* spriteButtonTest2 = new sf::Sprite(buttonTest2);
     testButton2->setSprite(spriteButtonTest2);
     spriteButtonTest2->setPosition(newGameButton->getPosition());
