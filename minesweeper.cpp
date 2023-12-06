@@ -4,6 +4,7 @@
 #include <cmath>
 using namespace std;
 
+// in order to change dimensions, please change line 13 in toolbox.h (sf::Vector2i boardDimensions = sf::Vector2i(25, 16);). please change the dimensions for sf::Vector2i(x,y). Thanks!
 int launch() {
     Toolbox& toolbox = Toolbox::getInstance();
     while (toolbox.window.isOpen()) {

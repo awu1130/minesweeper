@@ -4,7 +4,7 @@
 // Constructor
 Toolbox::Toolbox() {
     // set window
-    window.create(sf::VideoMode(800, 600), "P4 – Minesweeper, <Angelina Wu>");
+    window.create(sf::VideoMode(800, 600), "P4 - Minesweeper, Angelina Wu");
     // set textures
     hiddenTile.loadFromFile("images/tile_hidden.png");
     flag.loadFromFile("images/flag.png");
