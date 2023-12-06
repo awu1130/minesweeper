@@ -13,7 +13,6 @@ sf::Sprite* Button::getSprite() {
 void Button::setSprite(sf::Sprite* _sprite) {
     sprite = *_sprite;
 }
-// fix onClick
 void Button::onClick() {
     _onClick();
 }

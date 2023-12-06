@@ -6,7 +6,6 @@ using namespace std;
 class Tile {
 protected:
     void revealNeighbors();
-
 public:
     enum State { REVEALED, HIDDEN, FLAGGED, EXPLODED };
     Tile(sf::Vector2f position);

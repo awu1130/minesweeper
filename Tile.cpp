@@ -1,7 +1,6 @@
 #include <array>
 #include "Tile.h"
 #include "Toolbox.h"
-#include <iostream>
 
 Tile::Tile(sf::Vector2f position) {
     coordinate = position;
@@ -27,9 +26,6 @@ void Tile::onClickLeft() {
     if (state == HIDDEN) {
         revealNeighbors();
     }
-    //else if (state == EXPLODED) {
-
-    //}
 }
 void Tile::onClickRight() {
     if (state == HIDDEN) {
@@ -42,27 +38,24 @@ void Tile::onClickRight() {
 void Tile::draw() {
     Toolbox& toolbox = Toolbox::getInstance();
     if (state == HIDDEN) {
-        // Create a sprite and set its texture
         sf::Sprite sprite(toolbox.hiddenTile);
-        // Set the position of the sprite
         sprite.setPosition(coordinate.x, coordinate.y);
         toolbox.window.draw(sprite);
     }
     else if (state == FLAGGED) {
-        // Load the flag texture
+        // hidden tile
         sf::Sprite sprite(toolbox.hiddenTile);
-        // Set the position of the sprite
         sprite.setPosition(coordinate.x, coordinate.y);
         toolbox.window.draw(sprite);
+        // flag on top
         sf::Sprite sprite2(toolbox.flag);
         sprite2.setPosition(coordinate.x, coordinate.y);
-        // Draw the flag on top of the tile
         toolbox.window.draw(sprite2);
     }
     else if (state == REVEALED) {
+        // revealed tile
         sf::Sprite sprite(toolbox.revealedTile);
         sprite.setPosition(coordinate.x, coordinate.y);
-        // Draw the flag on top of the tile
         toolbox.window.draw(sprite);
         if (numNeighborMines == 1) {
             sf::Sprite sprite2(toolbox.number1);

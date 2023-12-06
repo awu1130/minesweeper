@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-//#include "Toolbox.h"
 #include "Tile.h"
 #include "Mine.h"
 #include <memory>
@@ -19,8 +18,8 @@ public:
 private:
     PlayStatus playStatus;
     std::vector<std::vector<std::unique_ptr<Tile>>> board;
-    //vector<vector<Mine>> mineBoard;
     int numFlags;
+    // ensures numMines is reset when loading files
     int numMines = 0;
 };
 

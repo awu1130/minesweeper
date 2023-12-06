@@ -14,24 +14,28 @@ int launch() {
             } else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2f mousePosition = toolbox.window.mapPixelToCoords(
                         sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                // new game button
                 if (event.mouseButton.button == sf::Mouse::Left && mousePosition.x >= 368 && mousePosition.x <= 368 + 64 &&
                     mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     toolbox.newGameButton->onClick();
-                } else if (mousePosition.x >= 496 && mousePosition.x <= 496 + 64 &&
+                } // debug button
+                else if (mousePosition.x >= 496 && mousePosition.x <= 496 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     toolbox.debugButton->onClick();
-                } else if (mousePosition.x >= 560 && mousePosition.x <= 560 + 64 &&
+                } // test button 1
+                else if (mousePosition.x >= 560 && mousePosition.x <= 560 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     toolbox.testButton1->onClick();
-                } else if (mousePosition.x >= 624 && mousePosition.x <= 624 + 64 &&
+                } // test button 2
+                else if (mousePosition.x >= 624 && mousePosition.x <= 624 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     toolbox.testButton2->onClick();
-                } else if (mousePosition.x >= 688 && mousePosition.x <= 688 + 64 &&
+                } // test button 3
+                else if (mousePosition.x >= 688 && mousePosition.x <= 688 + 64 &&
                            mousePosition.y >= 512 && mousePosition.y <= 512 + 64) {
                     toolbox.testButton3->onClick();
                 } else {
-                    // The click is not on any button, so it must be on a tile
-                    // Iterate over tiles and check for left/right-click on each tile
+                    // check tiles for clicking if game is still being played
                     for (int y = 0; y < toolbox.boardDimensions.x; ++y) {
                         for (int x = 0; x < toolbox.boardDimensions.y; ++x) {
                             Tile *currentTile = toolbox.gameState->getTile(x, y);
@@ -39,7 +43,6 @@ int launch() {
                                 mousePosition.x <= currentTile->getLocation().x + 32 &&
                                 mousePosition.y >= currentTile->getLocation().y &&
                                 mousePosition.y <= currentTile->getLocation().y + 32 && toolbox.gameState->getPlayStatus() != GameState::LOSS) {
-                                // Handle left/right-click on the current tile
                                 if (event.mouseButton.button == sf::Mouse::Right) {
                                     currentTile->onClickRight();
                                 } else if (event.mouseButton.button == sf::Mouse::Left) {
@@ -74,15 +77,13 @@ void loadTestButton3() {
 void restart() {
     Toolbox& toolbox = Toolbox::getInstance();
     delete toolbox.gameState;
-    // Create a new game state
     toolbox.gameState = new GameState();
-    // Reset debug mode and original states
     toolbox.debugMode = false;
     toolbox.originalMineStates.clear();
 }
 void render() {
     Toolbox& toolbox = Toolbox::getInstance();
-    // check win
+    // calculation to check win
     int numRevealed = 0;
     for (int y = 0; y < toolbox.boardDimensions.x; y++) {
         for (int x = 0; x < toolbox.boardDimensions.y; x++) {
@@ -92,7 +93,7 @@ void render() {
             }
         }
     }
-    if ((numRevealed + toolbox.gameState->getMineCount()) == 400) {
+    if ((numRevealed + toolbox.gameState->getMineCount()) == toolbox.boardDimensions.x * toolbox.boardDimensions.y) {
         toolbox.gameState->setPlayStatus(GameState::WIN);
     }
     // display tiles
@@ -129,7 +130,7 @@ void render() {
         toolbox.newGameButton->getSprite()->setPosition(368,512);
         toolbox.window.draw(*toolbox.newGameButton->getSprite());
     }
-    // display mine counter
+    // display mine counter (sorry in advance)
     int mineDisplay = toolbox.gameState->getMineCount() - toolbox.gameState->getFlagCount();
     int absMineDisplay = std::abs(mineDisplay);
     int onesDig = absMineDisplay % 10;
@@ -137,6 +138,7 @@ void render() {
     int tensDig = absMineDisplay % 10;
     sf::Texture oneDigImg;
     sf::IntRect textureRect;
+    // set digit for ones
     switch (onesDig) {
         case 0:
             // Define the rectangle that represents the part of the image you want
@@ -181,6 +183,7 @@ void render() {
             oneDigImg.loadFromImage(toolbox.digits.copyToImage(), textureRect);
             break;
     }
+    // set for tens digit
     sf::Texture tensDigImg;
     sf::IntRect tensTextureRect;
     switch (tensDig) {
@@ -227,6 +230,7 @@ void render() {
             tensDigImg.loadFromImage(toolbox.digits.copyToImage(), tensTextureRect);
             break;
     }
+    // check if 3-digit number, then set for hundreds digit if needed
     absMineDisplay = absMineDisplay / 10;
     if (std::abs(mineDisplay) > 99) {
         int hundsDig = absMineDisplay % 10;
@@ -279,8 +283,9 @@ void render() {
         sf::Sprite sprite3(hundsDigImg);
         sprite3.setPosition(0, 512);
         toolbox.window.draw(sprite3);
-    }
+    } // not three digit number
     else {
+        // check if negative, set "hundreds digit" to negative or 0 based on that
         sf::IntRect negTextureRect;
         sf::Texture negDigImg;
         if (mineDisplay < 0) {
@@ -297,6 +302,7 @@ void render() {
             toolbox.window.draw(sprite3);
         }
     }
+    // draw ones and tens digits
     sf::Sprite sprite(oneDigImg);
     sprite.setPosition(42, 512);
     toolbox.window.draw(sprite);
@@ -324,9 +330,8 @@ void toggleDebugMode() {
     else {
         toolbox.debugMode = false;
     }
-    // Handle click on the debug button
-    if (toolbox.debugMode) {
-        // Store original states if entering debug mode
+    if (getDebugMode()) {
+        // store original states for only mines
         toolbox.originalMineStates.clear();
         for (int y = 0; y < toolbox.boardDimensions.x; ++y) {
             for (int x = 0; x < toolbox.boardDimensions.y; ++x) {
@@ -338,7 +343,7 @@ void toggleDebugMode() {
             }
         }
     } else {
-        // Restore original states when exiting debug mode
+        // restore original states after debug mode for mines
         for (const auto& mineState : toolbox.originalMineStates) {
             int x = mineState[0];
             int y = mineState[1];
@@ -354,7 +359,6 @@ bool getDebugMode(){
     Toolbox& toolbox = Toolbox::getInstance();
     return toolbox.debugMode;
 }
-
 int main() {
     launch();
 }

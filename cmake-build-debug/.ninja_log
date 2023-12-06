@@ -1,12 +1,15 @@
 # ninja log v5
+41	2928	7235280079773655	CMakeFiles/minesweeper.dir/Tile.cpp.obj	7f8757ed8dee2823
+21	3233	7235280082881166	CMakeFiles/minesweeper.dir/Toolbox.cpp.obj	bb23e919612fb7f1
 12	4410	7231860235544218	CMakeFiles/minesweeper.dir/main.cpp.obj	9267d472a2e28dfe
-5	871	7235227008721570	CMakeFiles/minesweeper.dir/Tile.cpp.obj	7f8757ed8dee2823
-12	1483	7235207028086198	CMakeFiles/minesweeper.dir/Toolbox.cpp.obj	bb23e919612fb7f1
+26	2434	7235243510785043	CMakeFiles/minesweeper.dir/Button.cpp.obj	b21312372f730a2e
+3867	4722	7235280097682144	minesweeper.exe	f8180a240529add9
 2	438	7233542146859982	build.ninja	70f12fbdf58cb625
-873	1544	7235227015361614	minesweeper.exe	f8180a240529add9
-21	1438	7235178484099861	CMakeFiles/minesweeper.dir/Button.cpp.obj	b21312372f730a2e
-6	1734	7235213723009393	CMakeFiles/minesweeper.dir/GameState.cpp.obj	69ad94971895ef5d
-4	1192	7235208859183376	CMakeFiles/minesweeper.dir/minesweeper.cpp.obj	aad04ec9c8725c2c
-23	1386	7235207027096212	CMakeFiles/minesweeper.dir/Mine.cpp.obj	75d2a2844765b3d8
-9	1709	7235229501864733	CMakeFiles/minesweeper.dir/Tile.cpp.obj	7f8757ed8dee2823
-1711	2630	7235229510955142	minesweeper.exe	f8180a240529add9
+31	3866	7235280089206595	CMakeFiles/minesweeper.dir/GameState.cpp.obj	69ad94971895ef5d
+11	3522	7235280085776988	CMakeFiles/minesweeper.dir/minesweeper.cpp.obj	aad04ec9c8725c2c
+49	2793	7235280078461227	CMakeFiles/minesweeper.dir/Mine.cpp.obj	75d2a2844765b3d8
+21	2016	7235282195771415	CMakeFiles/minesweeper.dir/Tile.cpp.obj	7f8757ed8dee2823
+27	2062	7235282196268211	CMakeFiles/minesweeper.dir/Mine.cpp.obj	75d2a2844765b3d8
+16	2198	7235282197628550	CMakeFiles/minesweeper.dir/Toolbox.cpp.obj	bb23e919612fb7f1
+8	2424	7235282199889141	CMakeFiles/minesweeper.dir/minesweeper.cpp.obj	aad04ec9c8725c2c
+2425	3361	7235282209160716	minesweeper.exe	f8180a240529add9

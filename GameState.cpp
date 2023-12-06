@@ -7,18 +7,12 @@
 #include <set>
 
 GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
-    // Seed the random number generator with the current time
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> yDistribution(0, _dimensions.y);
-    std::uniform_real_distribution<double> xDistribution(0, _dimensions.x);
-    // store unique random positions
     playStatus = PLAYING;
     numFlags = 0;
     numMines = _numberOfMines;
     std::array<Tile*, 8> neighbors{};
 
-    // create the 2D vector with tile objects
+    // create 2D vector with tile objects
     for (int y = 0; y < _dimensions.y; y++) {
         board.emplace_back();  // Emplace a new row
         auto& currentRow = board.back();
@@ -27,25 +21,27 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
         }
     }
     // create mines
-    // Set to store unique random positions
+    // random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> yDistribution(0, _dimensions.y);
+    std::uniform_real_distribution<double> xDistribution(0, _dimensions.x);
+    // store unique random positions
     std::set<std::pair<int, int>> uniquePositions;
-
-    // Create mines
     for (int i = 0; i < _numberOfMines; i++) {
         double randomY;
         double randomX;
         std::pair<int, int> position;
-        // Generate unique random positions
+        // to ensure mine positions are unique so that enough show
         do {
             randomY = yDistribution(gen);
             randomX = xDistribution(gen);
             position = std::make_pair(static_cast<int>(randomY), static_cast<int>(randomX));
         } while (uniquePositions.count(position) > 0);
         uniquePositions.insert(position);
-        // Create a Mine at the chosen position
+        // create mine
         board[position.first][position.second] = std::make_unique<Mine>(sf::Vector2f(int(randomX) * 32.0f, int(randomY) * 32.0f));
     }
-
     // create neighbors
     for (int y = 0; y < _dimensions.y; y++) {
         for (int x = 0; x < _dimensions.x; x++) {
@@ -93,7 +89,6 @@ GameState::GameState(sf::Vector2i _dimensions, int _numberOfMines) {
         }
     }
 }
-
 GameState::GameState(const char* filepath) {
     // reading file part taken from my lab 8
     playStatus = PLAYING;
@@ -104,7 +99,7 @@ GameState::GameState(const char* filepath) {
     ifstream file(filepath);
     if (file.is_open()) {
         std::string line;
-        // Read the first line separately
+        // first line for dimensionX
         if (std::getline(file, line)) {
             dimensionX = line.length();
             std::vector<char> row;
@@ -114,10 +109,10 @@ GameState::GameState(const char* filepath) {
             fileDigits.push_back(row);
             dimensionY++;
         }
-        // Loop that reads every remaining line into fileContent
+        // other lines
         while (std::getline(file, line)) {
             cout << dimensionX << endl;
-            // Check if the line is not empty before processing
+            // check no blank line
             if (!line.empty()) {
                 std::vector<char> row;
                 for (int i = 0; i < dimensionX; i++) {
@@ -141,7 +136,6 @@ GameState::GameState(const char* filepath) {
             }
         }
     }
-    std::cout<<numMines<<endl;
     // create neighbors
     for (int y = 0; y < dimensionY; y++) {
         for (int x = 0; x < dimensionX; x++) {
@@ -191,6 +185,7 @@ GameState::GameState(const char* filepath) {
 }
 int GameState::getFlagCount() {
     numFlags = 0;
+    // check if each tile is flagged
     int numRows = board.size();
     int numCols = (numRows > 0) ? board[0].size() : 0;
     for (int y = 0; y < numRows; ++y) {
