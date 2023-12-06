@@ -1,33 +1,31 @@
 #include "Toolbox.h"
 #include <iostream>
-//#include "Tile.cpp"
-//#include "Button.cpp"
 
 // Constructor
 Toolbox::Toolbox() {
     // set window
     window.create(sf::VideoMode(800, 600), "P4 – Minesweeper, <Angelina Wu>");
     // set textures
-    hiddenTile.loadFromFile("./images/tile_hidden.png");
-    flag.loadFromFile("./images/flag.png");
-    revealedTile.loadFromFile("./images/tile_revealed.png");
-    mine.loadFromFile("./images/mine.png");
-    buttonTest1.loadFromFile("./images/test_1.png");
-    buttonTest2.loadFromFile("./images/test_2.png");
-    buttonTest3.loadFromFile("./images/Test_3.png");
-    buttonDebug.loadFromFile("./images/debug.png");
-    faceLose.loadFromFile("./images/face_lose.png");
-    faceWin.loadFromFile("./images/face_win.png");
-    faceHappy.loadFromFile("./images/face_happy.png");
-    number1.loadFromFile("./images/number_1.png");
-    number2.loadFromFile("./images/number_2.png");
-    number3.loadFromFile("./images/number_3.png");
-    number4.loadFromFile("./images/number_4.png");
-    number5.loadFromFile("./images/number_5.png");
-    number6.loadFromFile("./images/number_6.png");
-    number7.loadFromFile("./images/number_7.png");
-    number8.loadFromFile("./images/number_8.png");
-    digits.loadFromFile("./images/digits.png");
+    hiddenTile.loadFromFile("images/tile_hidden.png");
+    flag.loadFromFile("images/flag.png");
+    revealedTile.loadFromFile("images/tile_revealed.png");
+    mine.loadFromFile("images/mine.png");
+    buttonTest1.loadFromFile("images/test_1.png");
+    buttonTest2.loadFromFile("images/test_2.png");
+    buttonTest3.loadFromFile("images/Test_3.png");
+    buttonDebug.loadFromFile("images/debug.png");
+    faceLose.loadFromFile("images/face_lose.png");
+    faceWin.loadFromFile("images/face_win.png");
+    faceHappy.loadFromFile("images/face_happy.png");
+    number1.loadFromFile("images/number_1.png");
+    number2.loadFromFile("images/number_2.png");
+    number3.loadFromFile("images/number_3.png");
+    number4.loadFromFile("images/number_4.png");
+    number5.loadFromFile("images/number_5.png");
+    number6.loadFromFile("images/number_6.png");
+    number7.loadFromFile("images/number_7.png");
+    number8.loadFromFile("images/number_8.png");
+    digits.loadFromFile("images/digits.png");
     // create gameState
     gameState = new GameState(boardDimensions);
     // creating debugbutton

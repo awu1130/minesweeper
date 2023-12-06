@@ -62,17 +62,17 @@ int launch() {
 void loadTestButton1() {
     Toolbox& toolbox = Toolbox::getInstance();
     delete toolbox.gameState;
-    toolbox.gameState = new GameState("./boards/testboard1.brd");
+    toolbox.gameState = new GameState("boards/testboard1.brd");
 }
 void loadTestButton2() {
     Toolbox& toolbox = Toolbox::getInstance();
     delete toolbox.gameState;
-    toolbox.gameState = new GameState("./boards/testboard2.brd");
+    toolbox.gameState = new GameState("boards/testboard2.brd");
 }
 void loadTestButton3() {
     Toolbox& toolbox = Toolbox::getInstance();
     delete toolbox.gameState;
-    toolbox.gameState = new GameState("./boards/testboard3.brd");
+    toolbox.gameState = new GameState("boards/testboard3.brd");
 }
 void restart() {
     Toolbox& toolbox = Toolbox::getInstance();
@@ -107,19 +107,6 @@ void render() {
         toolbox.newGameButton->setSprite(toolbox.spriteFaceLose);
         toolbox.newGameButton->getSprite()->setPosition(368,512);
         toolbox.window.draw(*toolbox.newGameButton->getSprite());
-        /* fix if have time DYLAN SAID IDC YAYYYYY
-        for (int y = 0; y < 25; ++y) {
-            for (int x = 0; x < 16; ++x) {
-                Tile* currentTile = toolbox.gameState->getTile(, y);
-                if (auto mine = dynamic_cast<Mine*>(currentTile)) {
-                    sf::Texture texture;
-                    texture.loadFromFile("./images/mine.png");
-                    sf::Sprite sprite;
-                    sprite.setTexture(texture);
-                    toolbox.window.draw(sprite);
-                }
-            }
-        } */
     } else if (toolbox.gameState->getPlayStatus() == GameState::WIN) {
         toolbox.newGameButton->setSprite(toolbox.spriteFaceWin);
         toolbox.newGameButton->getSprite()->setPosition(368,512);

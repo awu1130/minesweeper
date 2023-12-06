@@ -10,7 +10,7 @@ public:
     bool debugMode;
     std::vector<std::array<int, 3>> originalMineStates; // Store original mine states
 
-    sf::Vector2i boardDimensions = sf::Vector2i(20, 10);
+    sf::Vector2i boardDimensions = sf::Vector2i(25, 16);
 
     sf::RenderWindow window; // SFML application window
     GameState* gameState; // Primary game state representation
